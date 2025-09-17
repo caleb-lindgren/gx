@@ -1,0 +1,35 @@
+#!/bin/sh
+op="$1"
+shift 1
+case "$op" in
+	web)
+		exec librewolf "$@"
+		;;
+	edit)
+		e $@
+		;;
+	a_edit)
+		e -a $@
+		;;
+	2a_edit)
+		e -2 $@
+		;;
+	man)
+		MANWIDTH=110 exec st man $@
+		;;
+	pdf)
+		zathura $@ &
+		;;
+	img)
+		feh -. $@ &
+		;;
+	libreoffice)
+		libreoffice $@ &
+		;;
+	chinese_short)
+		st -t "「$@」的定義" -f "Liberation Mono:pixelsize=30:antialias=true:autohint=true" multizhdict "$@" > /dev/null 2>&1 &
+		;;
+	chinese_long)
+		exec librewolf "https://translate.google.com/?sl=zh-CN&tl=en&text=${@/$'\n'/%0A}&op=translate"
+		;;
+esac
